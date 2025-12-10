@@ -3,7 +3,6 @@
 
 """Example code to demonstrate single-module streaming with the LAN-XI Open API."""
 
-import argparse
 import time
 import socket
 import threading

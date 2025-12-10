@@ -1,65 +1,46 @@
-# Open API Introduction
+# Modified B&K open API scripts for use with the PSU AERSP department's normal incidence impedance tube
+This repository contains a modified version of [B&K Open API example scripts](https://github.com/hbkworld/open-api-tutorials.git). The primary changes are:
+* A command line interface has been developed for initiating data acquisition and interfaceing with the LAN-XI modules.
+* The data is written out to an HDF5 file. 
+* A suite of post processing scripts is provided to processing measurements made in Penn State's Aerospace Engineering department's normal-incidence impedance tube (NIT).
 
-The [LAN-XI](https://www.bksv.com/en/instruments/daq-data-acquisition/lan-xi-daq-system) platform offers great flexibility and performance.
+## Dependencies
 
-![LAN-XI Frame with Removable Module](images/lan_xi_frame_with_removable_module.jpg "LAN-XI Frame with Removable Module")
+The following packages are required and can be installed through your package manager, pip, or an anaconda distribution.
 
-*Modules* are compact and rugged data aquisition units that support an array of transducers and input/output channel combinations. A built-in Ethernet interface connects modules to standard computer networks, optionally providing [PoE](https://en.wikipedia.org/wiki/Power_over_Ethernet) power and [PTP](https://en.wikipedia.org/wiki/Precision_Time_Protocol) time synchronization at sub-sample level accuracy for true, single-cable operation.
+* [h5py](https://docs.h5py.org/en/latest/build.html)
+* Numpy
+* Matplotlib 
+* Scipy 
 
-*Frames* provide the ability to assemble multiple modules for stacking or mounting in racks, further reducing the need for external network equipment and power supplies whilst adding features such as GPS synchronization.
+This repo was verified to work with Python 3.10, 3.11, and 3.12. 
 
-On top of this, HBK provides a range of desktop software applications for data acquisition and analysis.
+## Example Usage
 
-## Why Open API?
+To initialize the modules and acquire 10s of data, navigate to the src directory and run the record.py script followed by the ip address of the LAN-XI module. To record data from any other location on your machine it is recommended that the "src" and "help_scripts" directories be added to you .bashrc script. 
 
-Unfortunately, HBK software can't always meet every conceivable need that customers may have.
+The remaining argument options can be displayed by including the -h argument. This allows the user to specify the name of the output file, the sampling rate, the duration of data acquisition, and microphone sensitivity values if they differ from the TED info.
 
-Maybe the software application you require is not available on your preferred platform, say Linux or macOS, and you want to roll your own.
+This script can also be used when calibrating the microphones. The data is typically saved out in pascals, however, if the -c argument is included the raw voltages are saved instead. 
 
-You may need to interface LAN-XI directly to other software or hardware, such as MATLAB.
+The pressure time series and spectra can be plotted if the -p argument is supplied. 
 
-Or you have been tasked with implementing bespoke software for a production line, using LAN-XI hardware for acquisition and a company database for storage.
+```
+    ./record.py "module ip address"
+```
 
-Perhaps you want to run a set of custom signal analysis algorithms on acquired data in real-time.
+## Post Processing
 
-You might need to capture data directly onto local storage, rather than streaming on a slow or unreliable network.
+The help_scripts directory contains a suite of post-processing scrips to use with the NIT. Almost all of these scripts should be ran from the command line with the appropriate arguments. 
 
-Or maybe you are looking to create a smartphone application, or whip up a quick proof-of-concept demo to showcase a potential new product or algorithm.
+* generat_source_signal.py can be used to generate white and pink noise signals as well as linear frequency modulated signals. 
 
-Open API provides a pathway to doing all of those things.
+* spl.py computes the unweighted sound pressure level at each microphone. This is useful for adjusting the level of the source signal on your computer or the amplifier. 
 
-## Open API
+* spl_at_sample.py educes what the sound pressure level actually is at the surface of the sample.    
 
-The Open API is a set of protocols that enable end-users to acquire data using one or more LAN-XI modules.
+* compute_response.py is used to compute the impedance and absorption coefficient of the sample. This does NOT correct for any differences in the response of the microphones which can be eliminated by performing a switch calibration. 
 
-An HTTP-based protocol is used to configure modules and transducer conditioning, start and stop measurements, etc. This protocol uses standard HTTP methods such as GET, PUT, POST, and DELETE. The data interchange format is JSON.
+* mic_calibration.py is used to compute the sensitivties of each microphone. It is best to calibrate the microphones one at a time so unplug the other microphone that is not being calibrated from the LAN-XI module. The sensitivity values are written out to a json file and can then be provided to the record.py script via the command line interface.  
 
-The HTTP-based protocol is sufficient to perform measurements and store the data on an SD card inserted into each module.
 
-To stream data back to the client while the measurement is ongoing a custom, binary protocol is used.
-
-Measurements can be made using a single module, or multiple, PTP-synchronized modules.
-
-![Detecting Transducers with Open API](images/open-api-console.gif "Detecting Transducers with Open API")
-
-## Tutorials
-
-Tutorials and code examples written in Python are available on GitHub.
-
-Unless otherwise specified, the code samples in this repository work with all LAN-XI module types, and have been tested on Microsoft Windows and Linux.
-
-* [Streaming with Open API](tutorials/streaming_single_module.md) shows how to stream data from a single LAN-XI module, storing the data to a file on the local disk.
-
-* [Interpreting Open API Streams](tutorials/streaming_interpretation.md) continues where the Streaming tutorial left off, explaining how to interpret data from Open API streams.
-
-* [Multi-Module, Sample-Synchronous Streaming with Open API](tutorials/streaming_multi_module.md) demonstrates how to set up multiple LAN-XI modules to synchronously acquire and stream data.
-
-* [Open API Programmer's Toolbox](tutorials/programmers_toolbox.md) is a collection of cookbook-style code samples and snippets of information useful for working with the Open API.
-
-## A Word on Firmware Versions
-
-We recommend always using the latest [LAN-XI firmware](https://bksv.com/lanxi-firmware) version.
-
-This can be downloaded from the page linked above, and installed through the module's homepage.
-
-To enjoy free, unrestricted access to the Open API, ensure that your LAN-XI hardware is running firmware 2.10.0.344 or later.

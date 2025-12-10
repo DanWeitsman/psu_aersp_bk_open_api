@@ -53,12 +53,6 @@ def main():
     R,Z,alpha = acs_response(m1 =acs_data[0],m2 = acs_data[1],fs = fs,df = args.df,s = args.s,l = args.l,sos = args.sos,overlap = args.overlap,window = args.win)
     f = np.arange(len(R))*args.df
 
-    # fc = 125*2**np.arange(7)
-    # fl = fc/(2**0.5)
-    # fl_ind = np.abs(fl[:,None]-f).argmin(axis = -1)
-    # alpha_split = np.split(alpha,fl_ind)
-    # alpha_3rd_octave = [np.sum(x)/len(x) for x in alpha_split[1:-1]]
-
 #%%
 
     fig,ax = plt.subplots(2,1, figsize = (6.4,4.5))

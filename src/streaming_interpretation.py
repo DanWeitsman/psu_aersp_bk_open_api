@@ -5,11 +5,9 @@
 
 import os
 from datetime import datetime, timezone
-import argparse
 import numpy as np
 from kaitai.python.openapi_message import OpenapiMessage
 import h5py
-import json
 
 def calc_time(t):
     """

@@ -2,3 +2,5 @@ __pycache__
 construct
 /.vscode
 .python_version
+.DS_Store
+/dependencies
