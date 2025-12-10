@@ -1,4 +1,4 @@
-# Modified B&K open API scripts for use with the PSU AERSP department's normal incidence impedance tube
+# Modified B&K Open API scripts for use with the PSU AERSP department's NIT
 This repository contains a modified version of [B&K Open API example scripts](https://github.com/hbkworld/open-api-tutorials.git). The primary changes are:
 * A command line interface has been developed for initiating data acquisition and interfaceing with the LAN-XI modules.
 * The data is written out to an HDF5 file. 
