@@ -101,9 +101,10 @@ def streaming_interpretation(**kwargs):
         # Scale samples using the scale factor from the interpretation message
         if kwargs['sensitivity']:
             scale_factor = 10*10**(1.5/20)/kwargs['sensitivity'][index]
+        elif kwargs['calibrate']:
+            scale_factor = 10*10**(1.5/20)
         else:
             scale_factor = value[OpenapiMessage.Interpretation.EDescriptorType.scale_factor]
-        print(scale_factor)
         scaled_samples = (value["samples"] * scale_factor) / 2**23
 
         sample_rate = 1 / calc_time(value[OpenapiMessage.Interpretation.EDescriptorType.period_time])
