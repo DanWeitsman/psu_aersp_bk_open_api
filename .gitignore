@@ -1,6 +1,6 @@
 __pycache__
 construct
 /.vscode
-.python_version
+.python-version
 .DS_Store
 /dependencies
