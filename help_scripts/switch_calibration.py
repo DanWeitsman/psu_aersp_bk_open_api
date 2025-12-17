@@ -3,6 +3,7 @@ import os
 import h5py
 from help_functions import *
 import matplotlib.pyplot as plt
+import plot_styles 
 
 #%%
 
