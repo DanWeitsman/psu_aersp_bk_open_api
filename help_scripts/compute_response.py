@@ -36,7 +36,6 @@ def main():
     args = parser.parse_args()
 
     data = read_data_h5(os.path.join(os.getcwd(),args.save_dir,args.name,f'{args.name}.h5'))
-    keys = list(data.keys())
     max_ind = np.asarray([len(data[key]['scaled_samples']) for key in data.keys()]).min()
     acs_data = np.asarray([data[key]['scaled_samples'][:max_ind] for key in data.keys()])
 
