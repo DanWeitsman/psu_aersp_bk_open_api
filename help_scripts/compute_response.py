@@ -20,7 +20,7 @@ def main():
     parser.add_argument("-n", "--name", dest="name", default="measurement", \
         help="Name of the measurement")
     parser.add_argument("-d", "--save_dir", dest="save_dir", default="./", \
-        help="Absolute path of where to save the data")
+        help="Absolute path of where to save the data",default = 5)
     parser.add_argument("-df", type=float, \
         help="Frequency resolution (Hz)")
     parser.add_argument("-s", default=0.0366167, type=float, \
@@ -29,17 +29,16 @@ def main():
         help="distance between the sample and the mic that is closer to the driver [m]")
     parser.add_argument("-sos", default=343.563, type=float, \
         help="speed of sound [m/s]")
-    parser.add_argument("-ovr", "--overlap", default=0, type=float, \
+    parser.add_argument("-ovr", "--overlap", default=0.5, type=float, \
         help="percentage overlap between records")
-    parser.add_argument("-w", "--win", default="boxcar", \
+    parser.add_argument("-w", "--win", default="hann", \
         help="window function")
-    parser.add_argument("-p", "--plot", action="store_true", \
-        help="Include to plot time series and spectrum")
     args = parser.parse_args()
 
     data = read_data_h5(os.path.join(os.getcwd(),args.save_dir,args.name,f'{args.name}.h5'))
     keys = list(data.keys())
-    acs_data = np.asarray([data[key]['scaled_samples'] for key in data.keys()])
+    max_ind = np.asarray([len(data[key]['scaled_samples']) for key in data.keys()]).min()
+    acs_data = np.asarray([data[key]['scaled_samples'][:max_ind] for key in data.keys()])
 
     # sampling rate [Hz]
     fs = data['channel0']['sample_rate']
@@ -54,7 +53,6 @@ def main():
     f = np.arange(len(R))*args.df
 
 #%%
-
     fig,ax = plt.subplots(2,1, figsize = (6.4,4.5))
     plt.subplots_adjust(left = 0.15,bottom=0.15,hspace = 0.3)
     ax[0].plot(f,np.real(Z))
