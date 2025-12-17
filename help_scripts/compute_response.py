@@ -2,14 +2,11 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import plot_styles 
 from help_functions import *
 import os
 import argparse
 
-plt.rcParams['text.usetex'] = True
-plt.rcParams['font.family'] = 'serif'
-plt.rcParams['font.serif'] = ["Times New Roman"]
-plt.rcParams['font.size'] = 14
 default_colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 linestyle = ['-',':','--','-.']
 
@@ -20,8 +17,8 @@ def main():
     parser.add_argument("-n", "--name", dest="name", default="measurement", \
         help="Name of the measurement")
     parser.add_argument("-d", "--save_dir", dest="save_dir", default="./", \
-        help="Absolute path of where to save the data",default = 5)
-    parser.add_argument("-df", type=float, \
+        help="Absolute path of where to save the data")
+    parser.add_argument("-df", type=float,default = 5, \
         help="Frequency resolution (Hz)")
     parser.add_argument("-s", default=0.0366167, type=float, \
         help="microphone spacing [m]")

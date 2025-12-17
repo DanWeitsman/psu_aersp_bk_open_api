@@ -7,12 +7,6 @@ import matplotlib.pyplot as plt
 from scipy.signal import welch,csd
 from scipy.fft import fft,ifft
 
-plt.rcParams['text.usetex'] = True
-plt.rcParams['font.family'] = 'serif'
-plt.rcParams['font.serif'] = ["Times New Roman"]
-plt.rcParams['font.size'] = 12
-
-#%%%
 
 cases = ['5_12/r1','5_14/r14']
 

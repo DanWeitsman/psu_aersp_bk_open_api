@@ -10,11 +10,6 @@ from scipy.fft import fft
 import argparse
 
 #%%
-plt.rcParams['text.usetex'] = True
-plt.rcParams['font.family'] = 'serif'
-plt.rcParams['font.serif'] = ["Times New Roman"]
-plt.rcParams['font.size'] = 12
-#%%
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-c", "--correction", default=0,type=float, \
