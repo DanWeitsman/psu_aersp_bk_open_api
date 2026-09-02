@@ -6,7 +6,7 @@ import argparse
 import matplotlib.pyplot as plt
 from scipy.signal import welch,csd
 from scipy.fft import fft,ifft
-
+import plot_styles 
 
 cases = ['5_12/r1','5_14/r14']
 

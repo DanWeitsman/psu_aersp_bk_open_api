@@ -8,10 +8,13 @@ import json
 import matplotlib.pyplot as plt
 from scipy.fft import fft
 import argparse
+import plot_styles 
 
 #%%
 
 parser = argparse.ArgumentParser()
+parser.add_argument("-d", "--save_dir", default="./", \
+        help="Relative path from current directory where to save the data")
 parser.add_argument("-c", "--correction", default=0,type=float, \
     help="Barometric pressure correction factor to add to pistonephone calibration [dB]")
 parser.add_argument("-pist", "--pistonphone", action="store_true", \
@@ -39,11 +42,12 @@ def compute_sens(data,df):
     return S
 #%%
 
-files_in_dir = np.asarray(os.listdir(os.path.join(os.getcwd())))
-f_name =files_in_dir[[os.path.isdir(path) for path in files_in_dir]]
+save_dir = os.path.join(os.getcwd(),args.save_dir)
+files_in_dir = np.asarray(os.listdir(save_dir))
+f_name =np.sort(files_in_dir[[os.path.isdir(os.path.join(save_dir,f)) for f in files_in_dir]])
 
 data = {}
-[data.update({f:read_data_h5(os.path.join(os.getcwd(),f,f+'.h5'))}) for f in f_name]
+[data.update({f:read_data_h5(os.path.join(os.getcwd(),args.save_dir,f,f'{f}.h5'))}) for f in f_name]
 
 df = 5
 noverlap = 0.5
@@ -85,5 +89,5 @@ if args.plot:
 
 
 
-with open(os.path.join(os.path.dirname(__file__),'mic_sens.json'),'w') as f:
+with open(os.path.join(os.getcwd(),args.save_dir,'mic_sens.json'),'w') as f:
     json.dump(sensitivity,f,indent=2)

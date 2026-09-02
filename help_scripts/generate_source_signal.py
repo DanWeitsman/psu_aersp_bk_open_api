@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import numpy as np
 import matplotlib.pyplot as plt
 from help_functions import *
@@ -28,13 +30,13 @@ def main():
         help="lower and upper cutoff frequencies of bandpass filter if desired")
     args = parser.parse_args()
 
-    if args.LFM is not None:
+    if args.LFM:
         xn = LFM(args.f[0],args.f[1],args.T/2,args.T,args.A,args.fs)
 
-    if args.WN is not None:
+    elif args.WN:
         xn = white_noise(args.T,args.A,args.fs,fc = args.fc)
 
-    if args.PN is not None:
+    elif args.PN:
         xn = pink_noise(args.T,args.A,args.fs,fc = args.fc)
     
     wavfile.write(os.path.join(os.getcwd(),f"{args.name}.wav"), int(args.fs), xn)

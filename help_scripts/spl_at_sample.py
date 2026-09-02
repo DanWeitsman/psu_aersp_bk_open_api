@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from help_functions import *
 import os
 import argparse
+import plot_styles 
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-n", "--name", dest="name", default="measurement", \
@@ -23,7 +24,7 @@ parser.add_argument("-ovr", "--overlap", default=0, type=float, \
     help="percentage overlap between records")
 parser.add_argument("-w", "--win", dest="window", default="boxcar", \
     help="window function")
-parser.add_argument("-m", "--m3",action="store_true", \
+parser.add_argument("-m", "--m3",action="store_true",\
     help="Provide this argument if there is a microphone flush mounted to the test sample for comparison.")
 parser.add_argument("-p", "--plot", action="store_true", \
     help="Include to plot time series and spectrum")
@@ -62,9 +63,8 @@ if args.plot:
         leglab.append(f'Measured: Channel {i+1}')
     ax.plot(f[1:],10*np.log10(Gxx_educed[1:]/20e-6**2),linestyle = ':')
     ax.legend(leglab+['Educed'])
-    ax.set_ylabel('$PSD, \ dB/Hz \ (re: \ 20 \mu Pa)$')
-    ax.set_xlabel('$Frequency \ [Hz]$')
-    # ax.set_ylim([0,100])
+    ax.set_ylabel(r'$PSD, \ dB/Hz \ (re: \ 20 \mu Pa)$')
+    ax.set_xlabel(r'$Frequency \ [Hz]$')
     ax.grid()
     plt.savefig(os.path.join(os.getcwd(),args.save_dir,args.name,f'spl_at_sample.png'),format = 'png')
 

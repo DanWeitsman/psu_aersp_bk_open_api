@@ -18,7 +18,7 @@ def main():
         help="Name of the measurement")
     parser.add_argument("-d", "--save_dir", dest="save_dir", default="./", \
         help="Absolute path of where to save the data")
-    parser.add_argument("-df", type=float,default = 5, \
+    parser.add_argument("-df", type=float,default = 10, \
         help="Frequency resolution (Hz)")
     parser.add_argument("-s", default=0.0366167, type=float, \
         help="microphone spacing [m]")
@@ -68,6 +68,27 @@ def main():
     ax[0].grid()
     ax[1].grid()
     plt.savefig(os.path.join(os.getcwd(),args.save_dir,args.name,f'alpha.png'),format = 'png')
+
+
+    fig,ax = plt.subplots(2,2, figsize = (6.5*.95,2/3*6.5*.95))
+    # plt.subplots_adjust(left=0.1,right = .975,top = 0.95,bottom=0.175,hspace = 0.1,wspace = 0.325)
+    plt.subplots_adjust(left=0.1,right = .975,top = 0.95,bottom=0.175,hspace = 0.1,wspace = 0.325)
+    ax[0,0].plot(f,np.real(Z))
+    ax[1,0].plot(f,np.imag(Z))
+    ax[0,1].plot(f,np.abs(R))
+    ax[1,1].plot(f,np.angle(R))
+    # ax[1,1].plot(f,np.unwrap(np.angle(R),period =0,discont = np.pi/2))
+    ax[0,0].set(ylabel = r'$\mathrm{Resistance}, \ \overline{\theta}$',xlim = [500,3.5e3],ylim = [0,10],xticklabels = [])
+    ax[0,0].grid()
+    ax[1,0].set(ylabel = r'$\mathrm{Reactance}, \ \overline{\chi}$',xlabel = r'Frequency [Hz]',xlim = [500,3.5e3],ylim = [-40,40])
+    ax[1,0].grid()
+    ax[0,1].set(ylabel = r'$\mathrm{Reflection}, \ |\mathcal{R}|$',xlim = [500,3.5e3],ylim = [0,1],xticklabels = [])
+    ax[0,1].grid()
+    ax[1,1].set(ylabel = r'$\mathrm{Phase}, \ \varphi \ [rad]$',xlabel = r'Frequency [Hz]',xlim = [500,3.5e3],ylim = [None,None])
+    ax[-1,1].grid()
+    plt.savefig(os.path.join(os.getcwd(),args.save_dir,args.name,f'resp.png'),format = 'png')
+    plt.close()
+
 
 if __name__ == "__main__":
     main()
